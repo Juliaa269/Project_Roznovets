@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin film</title>
-    <link rel="stylesheet" type="text/css" href="Admin-film.css">
+    <link rel="stylesheet" type="text/css" href="Admin-movie.css">
     <link rel="stylesheet" type="text/css" href="Client-total.css">
     <link href="https://fonts.googleapis.com/css2?family=Marko+One&display=swap" rel="stylesheet">
 </head>
@@ -12,11 +12,11 @@
     <header class="header">
         <nav class="navigation">
             <a href="Admin-home.html" class="nav">На главную</a> 
-            <a href="Admin-film.html" class="nav">Фильмы</a> 
-            <a href="Admin-session.html" class="nav">Сеансы</a> 
+            <a href="Admin-movie.html" class="nav">Фильмы</a> 
+            <a href="Admin-show.html" class="nav">Сеансы</a> 
         </nav>
     </header>
-    <div class="current-films">
+    <div class="current-movies">
         <h2 class="title-table">
             Текущие фильмы
         </h2>
@@ -29,47 +29,47 @@
                 <th>Удалить</th>
             </tr>
             <tr>
-                <td class="title-film">Черный лебедь</td>
-                <td class="ID-film">834682340235239</td>
+                <td class="title-movie">Черный лебедь</td>
+                <td class="ID-movie">834682340235239</td>
                 <td class="duration">144 м</td>
                 <td><button class="update">Изменить</button></td>
                 <td><button class="delete">Удалить</button></td>
             </tr>
             <tr>
-                <td class="title-film">Анна</td>
-                <td class="ID-film">3982374912н4923</td>
+                <td class="title-movie">Анна</td>
+                <td class="ID-movie">3982374912н4923</td>
                 <td class="duration">120 м</td>
                 <td><button class="update">Изменить</button></td>
                 <td><button class="delete">Удалить</button></td>
             </tr>
             <tr>
-                <td class="title-film">Железный человек</td>
-                <td class="ID-film">3749237509237</td>
+                <td class="title-movie">Железный человек</td>
+                <td class="ID-movie">3749237509237</td>
                 <td class="duration">90 м</td>
                 <td><button class="update">Изменить</button></td>
                 <td><button class="delete">Удалить</button></td>
             </tr>
         </table>
     </div>
-    <div class="add-film">
+    <div class="add-movie">
         <form action="handler.php" class="form-add">
-            <p class="addfilm-title">Добавить фильм</p>
+            <p class="addmovie-title">Добавить фильм</p>
             <table class="inputs">
                 <tr>
-                    <th><label for="name-film">Название фильма</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите название фильма" id="name-film" name="name-film" required></td>
+                    <th><label for="name-movie">Название фильма</label></th>
+                    <td><input type="text" size="35px" placeholder="Введите название фильма" id="name-movie" name="name-movie" required></td>
                 </tr>
                 <tr>
-                    <th><label for="id-film">ID фильма</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите id фильма" id="id-film" name="id-film" required></td>
+                    <th><label for="id-movie">ID фильма</label></th>
+                    <td><input type="text" size="35px" placeholder="Введите id фильма" id="id-movie" name="id-movie" required></td>
                 </tr>
                 <tr>
-                    <th><label for="duration-film">Продолжительность фильма</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите продолжительность фильма" id="duration-film" name="duration-film" required></td>
+                    <th><label for="duration-movie">Продолжительность фильма</label></th>
+                    <td><input type="text" size="35px" placeholder="Введите продолжительность фильма" id="duration-movie" name="duration-movie" required></td>
                 </tr>
                 <tr>
-                    <th><label for="poster-film">Постер фильма</label></th>
-                    <td><input type="file" placeholder="Вставьте постер фильма" id="poster-film" name="poster-film" required></td>
+                    <th><label for="poster-movie">Постер фильма</label></th>
+                    <td><input type="url" placeholder="Вставьте ссылку на постер фильма" pattern="https://.*" id="poster-movie" name="poster-movie" required size="35px"></td>
                 </tr>
             </table>
             <button class="button" type="submit">Добавить</button>

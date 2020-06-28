@@ -5,7 +5,7 @@
     border-collapse: collapse;
 }
 
-.current-films{
+.current-movies{
     text-align: center;
 }
 
@@ -22,7 +22,7 @@ td{
     text-align: left;
 }
 
-.add-film{
+.add-movie{
     
     margin-top: 100px;
 }
@@ -33,7 +33,7 @@ td{
     left: 50%;
 }
 
-.addfilm-title{
+.addmovie-title{
     position: relative;
     left: 42%;
     font-size: 26px;
