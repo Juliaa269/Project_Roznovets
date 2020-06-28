@@ -1,0 +1,42 @@
+.table{
+    text-align: center;
+    border: 2px solid #000;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+.current-films{
+    text-align: center;
+}
+
+.table th{
+    background: #C4C4C4;
+}
+
+td{
+    border: 1px solid #000;
+}
+
+.inputs{
+    margin: auto;
+    text-align: left;
+}
+
+.add-film{
+    
+    margin-top: 100px;
+}
+
+.button{
+    margin-top: 20px;
+    position: relative;
+    left: 50%;
+}
+
+.addfilm-title{
+    position: relative;
+    left: 42%;
+    font-size: 26px;
+    font-weight: bold;
+    font-family: 'Marko One', serif;
+}

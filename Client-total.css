@@ -1,0 +1,32 @@
+* {
+    box-sizing: border-box;
+}
+body{
+    position: relative;
+    margin: 0 0;
+}
+
+.header{
+    background-color: #000;
+    height: 115px;
+}
+
+.nav{
+    color: #fff;
+    font-family: 'Marko One', serif;
+    text-decoration: none;
+}
+
+.nav:visited{
+    color: #fff;
+}
+
+.navigation{
+    text-align: center;
+    padding-top: 40px;
+}
+
+a:not(:last-child){
+    margin-right: 100px;
+}
+

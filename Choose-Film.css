@@ -1,0 +1,13 @@
+.film{
+    display: inline-block;
+    margin-top: 100px;
+}
+.film:not(:last-child){
+    margin-right: 60px;
+}
+
+.content{
+    text-align: center;
+    font-family: 'Marko One', serif;
+}
+

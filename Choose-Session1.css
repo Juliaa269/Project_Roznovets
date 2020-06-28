@@ -1,0 +1,23 @@
+.ses1{
+    display: inline-block;
+}
+
+.ses1:not(:first-child){
+    margin-left: 30px;
+}
+
+.title{
+    text-align: center;
+}
+
+.sessions{
+    margin-top: 200px;
+    width: 300px;
+    position: absolute;
+    left: 40%;
+    font-family: 'Marko One', serif;
+}
+
+.all-sess{
+    text-align: center;
+}

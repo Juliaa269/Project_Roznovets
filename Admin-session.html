@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin session</title>
+    <link rel="stylesheet" type="text/css" href="Admin-film.css">
+    <link rel="stylesheet" type="text/css" href="Client-total.css">
+    <link href="https://fonts.googleapis.com/css2?family=Marko+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navigation">
+            <a href="Admin-home.html" class="nav">На главную</a> 
+            <a href="Admin-film.html" class="nav">Фильмы</a> 
+            <a href="Admin-session.html" class="nav">Сеансы</a> 
+        </nav>
+    </header>
+    <div class="current-films">
+        <h2 class="title-table">
+            Текущие сеансы
+        </h2>
+        <table class="table">
+            <tr>
+                <th>Название</th>
+                <th>ID фильма</th>
+                <th>ID сеанса</th>
+                <th>Время</th>
+                <th>Зал</th>
+                <th>Редактировать</th>
+                <th>Удалить</th>
+            </tr>
+            <tr>
+                <td class="title-film">Черный лебедь</td>
+                <td class="id-film">834682340235239</td>
+                <td class="id-session">834682340235239</td>
+                <td class="session-time">12:00</td>
+                <td class="session-room">1</td>
+                <td><button class="update">Изменить</button></td>
+                <td><button class="delete">Удалить</button></td>
+            </tr>
+            <tr>
+                <td class="title-film">Анна</td>
+                <td class="id-film">834682340235239</td>
+                <td class="id-session">834682340235239</td>
+                <td class="session-time">12:00</td>
+                <td class="session-room">1</td>
+                <td><button class="update">Изменить</button></td>
+                <td><button class="delete">Удалить</button></td>
+            </tr>
+            <tr>
+                <td class="title-film">Железний человек</td>
+                <td class="id-film">834682340235239</td>
+                <td class="id-session">834682340235239</td>
+                <td class="session-time">12:00</td>
+                <td class="session-room">1</td>
+                <td><button class="update">Изменить</button></td>
+                <td><button class="delete">Удалить</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="add-film">
+        <form action="handler.php" class="form-add">
+            <p class="addfilm-title">Добавить сеанс</p>
+            <table class="inputs">
+                <tr>
+                    <th><label for="id-session">ID сеанса</label></th>
+                    <td><input type="text" size="35px" placeholder="Введите id сеанса" id="id-session" name="id-session" required></td>
+                </tr>
+                <tr>
+                    <th><label for="id-film">ID фильма</label></th>
+                    <td><input type="text" size="35px" placeholder="Введите id фильма" id="id-film" name="id-film" required></td>
+                </tr>
+                <tr>
+                    <th><label for="session-time">Время</label></th>
+                    <td><input type="text" size="35px" placeholder="Введите время" id="session-time" name="session-time" required></td>
+                </tr>
+                <tr>
+                    <th><label for="session-room">Зал</label></th>
+                    <td><input type="text" size="35px" placeholder="Введите номер зала" id="session-room" name="session-room" required></td>
+                </tr>
+            </table>
+            <button class="button" type="submit">Добавить</button>
+        </form>
+    </div>
+</body>
+</html>
