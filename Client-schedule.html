@@ -23,52 +23,42 @@
             Выберите дату сеанса
         </p>
         <div class="calendar">
-            <input type="date" name="calendar" value="2020-06-26" max="2020-06-29" min="2020-06-27" v-model="show_date" >
+            <input type="date" name="calendar" value="2020-06-26" max="2020-06-29" min="2020-06-27" v-model="show_date">
             <a type="submit" v-on:click="dateChoosed()">Go</a>
         </div>
     </div>
 
     <div v-if="movies.length !== 0">
         <div class="content">
-        <div class="movie" v-for="movie in movies" :key="movie.id">
-            <img v-bind:src=movie.poster width="230" height="350">
-            <p class="title">
-                {{movie.title}}
-            </p>
-            <p class="duration">
-                {{movie.duration}}
-            </p>
-            <p>
-                <a type="submit" v-on:click="shows(movie.id)">Сеансы</a>
-            </p>
+            <div class="movie" v-for="movie in movies" :key="movie.id">
+                <img v-bind:src=movie.poster width="230" height="350">
+                <p class="title">
+                    {{movie.title}}
+                </p>
+                <p class="duration">
+                    {{movie.duration}}
+                </p>
+                <p>
+                    <a type="submit" v-on:click="getShows(movie.id)">Сеансы</a>
+                </p>
+            </div>
+
+
         </div>
-
-
-        <div class="shows" style="display: none">
+    </div>
+    <h1 v-else>О, нет. Дата сеанса не выбрана 😢</h1>
+    <div v-if="shows.length !== 0">
+        <div class="shows">
             <h2 class="title">Сеансы</h2>
             <hr>
             <div class="all-sess">
-                <div class="movie">
-                    <a href="error.html" >9:00</a>
-                    <p class="ses1">Зал IMAX</p>
-                </div>
-                <div class="movie">
-                    <a href="error.html" >14:30</a>
-                    <p class="ses1">Зал 2</p>
-                </div>
-                <div class="movie">
-                    <a href="error.html" class="ses1">19:00</a>
-                    <p class="ses1">Зал 1</p>
-                </div>
-                <div class="movie">
-                    <a href="error.html" class="ses1">22:00</a>
-                    <p class="ses1">Зал 3</p>
+                <div class="movie" v-for="show in shows" :key="show.id">
+                    <a href="error.html">{{show.time_at}}</a>
+                    <p class="ses1">{{show.room}}</p>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-    <h1 v-else>О, нет. Дата сеанса не выбрана 😢</h1>
 </div>
 </body>
 <script>
@@ -77,7 +67,8 @@
         data: () => ({
             id: null,
             show_date: null,
-            movies: []
+            movies: [],
+            shows: []
         }),
         mounted: function () {
         },
@@ -129,9 +120,9 @@
                 this.duration = duration;
                 this.poster = poster;
             },
-            dateChoosed: function(){
+            dateChoosed: function () {
                 console.log(this.show_date)
-                axios.get(`http://localhost:3001/schedule/` + this.show_date)
+                axios.get(`http://localhost:3001/schedule/${this.show_date}`)
                     .then(function (response) {
                         console.log(response.data)
                         app.movies = response.data;
@@ -140,9 +131,16 @@
                         movies = error;
                     });
             },
-            shows: function(){
-
-    }
+            getShows: function (id) {
+                axios.get(`http://localhost:3001/schedule/${this.show_date}/${id}`)
+                    .then(function (response) {
+                        console.log(response.data)
+                        app.shows = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+            }
         }
     });
 </script>
