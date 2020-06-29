@@ -7,13 +7,16 @@
     <link rel="stylesheet" type="text/css" href="Admin-movie.css">
     <link rel="stylesheet" type="text/css" href="Client-total.css">
     <link href="https://fonts.googleapis.com/css2?family=Marko+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
+<div id="app">
     <header class="header">
         <nav class="navigation">
-            <a href="Admin-home.html" class="nav">На главную</a> 
-            <a href="Admin-movie.html" class="nav">Фильмы</a> 
-            <a href="Admin-show.html" class="nav">Сеансы</a> 
+            <a href="Admin-home.html" class="nav">На главную</a>
+            <a href="Admin-movie.html" class="nav">Фильмы</a>
+            <a href="Admin-show.html" class="nav">Сеансы</a>
         </nav>
     </header>
     <div class="current-movies">
@@ -24,56 +27,121 @@
             <tr>
                 <th>Название</th>
                 <th>ID фильма</th>
+                <th>Постер</th>
                 <th>Продолжительность</th>
                 <th>Редактировать</th>
                 <th>Удалить</th>
             </tr>
-            <tr>
-                <td class="title-movie">Черный лебедь</td>
-                <td class="ID-movie">834682340235239</td>
-                <td class="duration">144 м</td>
-                <td><button class="update">Изменить</button></td>
-                <td><button class="delete">Удалить</button></td>
-            </tr>
-            <tr>
-                <td class="title-movie">Анна</td>
-                <td class="ID-movie">3982374912н4923</td>
-                <td class="duration">120 м</td>
-                <td><button class="update">Изменить</button></td>
-                <td><button class="delete">Удалить</button></td>
-            </tr>
-            <tr>
-                <td class="title-movie">Железный человек</td>
-                <td class="ID-movie">3749237509237</td>
-                <td class="duration">90 м</td>
-                <td><button class="update">Изменить</button></td>
-                <td><button class="delete">Удалить</button></td>
+            <tr v-for="movie in movies" :key="movie.id">
+                <td class="title-movie">{{movie.title}}</td>
+                <td class="id">{{movie.id}}</td>
+                <td class="duration"><a v-bind:href=movie.poster>click</a></td>
+                <td class="duration">{{movie.duration}}</td>
+                <td>
+                    <button class="update" type="submit" v-on:click="update(movie.id, movie.title, movie.duration, movie.poster)">Изменить</button>
+                </td>
+                <td>
+                    <button class="delete" type="submit" v-on:click="remove(movie.id)">Удалить</button>
+                </td>
             </tr>
         </table>
     </div>
     <div class="add-movie">
-        <form action="handler.php" class="form-add">
+        <div class="form-add">
             <p class="addmovie-title">Добавить фильм</p>
             <table class="inputs">
                 <tr>
                     <th><label for="name-movie">Название фильма</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите название фильма" id="name-movie" name="name-movie" required></td>
-                </tr>
-                <tr>
-                    <th><label for="id-movie">ID фильма</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите id фильма" id="id-movie" name="id-movie" required></td>
+                    <td><input type="text" size="35px" placeholder="Введите название фильма" id="name-movie"
+                               name="name-movie" required v-model="title"></td>
                 </tr>
                 <tr>
                     <th><label for="duration-movie">Продолжительность фильма</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите продолжительность фильма" id="duration-movie" name="duration-movie" required></td>
+                    <td><input type="text" size="35px" placeholder="Введите продолжительность фильма"
+                               id="duration-movie" name="duration-movie" required v-model="duration"></td>
                 </tr>
                 <tr>
                     <th><label for="poster-movie">Постер фильма</label></th>
-                    <td><input type="url" placeholder="Вставьте ссылку на постер фильма" pattern="https://.*" id="poster-movie" name="poster-movie" required size="35px"></td>
+                    <td><input type="url" placeholder="Вставьте ссылку на постер фильма"
+                               id="poster-movie" name="poster-movie" required size="35px" v-model="poster"></td>
                 </tr>
             </table>
-            <button class="button" type="submit">Добавить</button>
-        </form>
+            <button class="button" type="button" value="add" v-on:click="add()">Добавить</button>
+        </div>
     </div>
+</div>
 </body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: () => ({
+            id: null,
+            movies: null,
+            title: null,
+            poster: null,
+            duration: null
+        }),
+        mounted: function () {
+            this.reload();
+        },
+        methods: {
+            reload: function () {
+                console.log('reload')
+                axios.get('http://localhost:3002/movies')
+                    .then(response => {
+                        this.movies = response.data
+                    })
+                    .catch(function (error) {
+                        movies = error;
+                    });
+            },
+            remove: function (id) {
+                axios.delete(`http://localhost:3001/movies/${id}`)
+                    .then(function () {
+                        console.log('Deleted successfully')
+                        app.reload();
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+            },
+            add: function () {
+                if (this.id === null) {
+                    console.log('add')
+                    axios.put('http://localhost:3001/movies', {
+                        title: this.title,
+                        duration: this.duration,
+                        poster: this.poster
+                    })
+                        .then(function () {
+                            app.reload();
+                        })
+                        .catch(function (error) {
+                            movies = error;
+                        });
+                } else {
+                    console.log('update')
+                    axios.post(`http://localhost:3001/movies/` + this.id, {
+                        title: this.title,
+                        duration: this.duration,
+                        poster: this.poster
+                    })
+                        .then(function (response) {
+                            console.log(this)
+                            app.reload();
+                        })
+                        .catch(function (error) {
+                            movies = error;
+                        });
+                }
+            },
+            update: function (id, title, duration, poster) {
+                this.id = id;
+                this.title = title;
+                this.duration = duration;
+                this.poster = poster;
+            }
+        }
+    });
+</script>
 </html>
