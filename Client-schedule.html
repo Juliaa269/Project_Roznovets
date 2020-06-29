@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Shedule</title>
-    <link rel="stylesheet" type="text/css" href="Client-schedule.css">
+    <title>Choose Movie 2</title>
     <link rel="stylesheet" type="text/css" href="Client-total.css">
+    <link rel="stylesheet" type="text/css" href="Choose-movie.css">
     <link href="https://fonts.googleapis.com/css2?family=Marko+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
+<div id="app">
     <header class="header">
         <nav class="navigation">
-            <a href="Client-home.html" class="nav">На главную</a> 
-            <a href="Client-schedule.html" class="nav">Расписание</a> 
+            <a href="Client-home.html" class="nav">На главную</a>
+            <a href="Client-schedule.html" class="nav">Расписание</a>
         </nav>
     </header>
     <div class="content">
@@ -20,14 +23,127 @@
             Выберите дату сеанса
         </p>
         <div class="calendar">
-            <input type="date" name="calendar" value="2020-06-26" max="2020-06-29" min="2020-06-27">
-            <input type="submit" value="Выбрать">
-            <!-- кнопка должна перекинуть нас на страницу Choose-Film.html в зависимости от выбранного дня
-            если это 27.06.2020, то страница Choose-Film1.html
-            если это 28.06.2020, то страница Choose-Film2.html
-            если это 28.06.2020, то страница Choose-Film2.html  ???
-            -->
+            <input type="date" name="calendar" value="2020-06-26" max="2020-06-29" min="2020-06-27" v-model="show_date" >
+            <a type="submit" v-on:click="dateChoosed()">Go</a>
         </div>
     </div>
+
+    <div v-if="movies.length !== 0">
+        <div class="content">
+        <div class="movie" v-for="movie in movies" :key="movie.id">
+            <img v-bind:src=movie.poster width="230" height="350">
+            <p class="title">
+                {{movie.title}}
+            </p>
+            <p class="duration">
+                {{movie.duration}}
+            </p>
+            <p>
+                <a type="submit" v-on:click="shows(movie.id)">Сеансы</a>
+            </p>
+        </div>
+
+
+        <div class="shows" style="display: none">
+            <h2 class="title">Сеансы</h2>
+            <hr>
+            <div class="all-sess">
+                <div class="movie">
+                    <a href="error.html" >9:00</a>
+                    <p class="ses1">Зал IMAX</p>
+                </div>
+                <div class="movie">
+                    <a href="error.html" >14:30</a>
+                    <p class="ses1">Зал 2</p>
+                </div>
+                <div class="movie">
+                    <a href="error.html" class="ses1">19:00</a>
+                    <p class="ses1">Зал 1</p>
+                </div>
+                <div class="movie">
+                    <a href="error.html" class="ses1">22:00</a>
+                    <p class="ses1">Зал 3</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <h1 v-else>О, нет. Дата сеанса не выбрана 😢</h1>
+</div>
 </body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: () => ({
+            id: null,
+            show_date: null,
+            movies: []
+        }),
+        mounted: function () {
+        },
+        methods: {
+
+            remove: function (id) {
+                axios.delete(`http://localhost:3001/movies/${id}`)
+                    .then(function () {
+                        console.log('Deleted successfully')
+                        app.reload();
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+            },
+            add: function () {
+                if (this.id === null) {
+                    console.log('add')
+                    axios.put('http://localhost:3001/movies', {
+                        title: this.title,
+                        duration: this.duration,
+                        poster: this.poster
+                    })
+                        .then(function () {
+                            app.reload();
+                        })
+                        .catch(function (error) {
+                            movies = error;
+                        });
+                } else {
+                    console.log('update')
+                    axios.post(`http://localhost:3001/movies/` + this.id, {
+                        title: this.title,
+                        duration: this.duration,
+                        poster: this.poster
+                    })
+                        .then(function (response) {
+                            console.log(this)
+                            app.reload();
+                        })
+                        .catch(function (error) {
+                            movies = error;
+                        });
+                }
+            },
+            update: function (id, title, duration, poster) {
+                this.id = id;
+                this.title = title;
+                this.duration = duration;
+                this.poster = poster;
+            },
+            dateChoosed: function(){
+                console.log(this.show_date)
+                axios.get(`http://localhost:3001/schedule/` + this.show_date)
+                    .then(function (response) {
+                        console.log(response.data)
+                        app.movies = response.data;
+                    })
+                    .catch(function (error) {
+                        movies = error;
+                    });
+            },
+            shows: function(){
+
+    }
+        }
+    });
+</script>
 </html>

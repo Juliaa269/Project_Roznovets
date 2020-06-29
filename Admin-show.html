@@ -7,8 +7,11 @@
     <link rel="stylesheet" type="text/css" href="Admin-movie.css">
     <link rel="stylesheet" type="text/css" href="Client-total.css">
     <link href="https://fonts.googleapis.com/css2?family=Marko+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
+<div id="app">
     <header class="header">
         <nav class="navigation">
             <a href="Admin-home.html" class="nav">На главную</a> 
@@ -30,32 +33,18 @@
                 <th>Редактировать</th>
                 <th>Удалить</th>
             </tr>
-            <tr>
-                <td class="title-movie">Черный лебедь</td>
-                <td class="id-movie">834682340235239</td>
-                <td class="id-show">834682340235239</td>
-                <td class="show-time">12:00</td>
-                <td class="show-room">1</td>
-                <td><button class="update">Изменить</button></td>
-                <td><button class="delete">Удалить</button></td>
-            </tr>
-            <tr>
-                <td class="title-movie">Анна</td>
-                <td class="id-movie">834682340235239</td>
-                <td class="id-show">834682340235239</td>
-                <td class="show-time">12:00</td>
-                <td class="show-room">1</td>
-                <td><button class="update">Изменить</button></td>
-                <td><button class="delete">Удалить</button></td>
-            </tr>
-            <tr>
-                <td class="title-movie">Железний человек</td>
-                <td class="id-movie">834682340235239</td>
-                <td class="id-show">834682340235239</td>
-                <td class="show-time">12:00</td>
-                <td class="show-room">1</td>
-                <td><button class="update">Изменить</button></td>
-                <td><button class="delete">Удалить</button></td>
+            <tr v-for="show in shows" :key="show.id">
+                <td class="title-movie">{{show.title}}</td>
+                <td class="id-movie">{{show.movie_id}}</td>
+                <td class="id-show">{{show.id}}</td>
+                <td class="show-time">{{show.time_at}}</td>
+                <td class="show-room">{{show.room}}</td>
+                <td>
+                    <button class="update" type="submit" v-on:click="update(show.id, show.movie_id, show.time_at, show.room)">Изменить</button>
+                </td>
+                <td>
+                    <button class="delete" type="submit" v-on:click="remove(show.id)">Удалить</button>
+                </td>
             </tr>
         </table>
     </div>
@@ -65,23 +54,97 @@
             <table class="inputs">
                 <tr>
                     <th><label for="id-show">ID сеанса</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите id сеанса" id="id-show" name="id-show" required></td>
+                    <td><input type="text" size="35px" placeholder="Введите id сеанса" id="id-show" name="id-show" v-model="id" required></td>
                 </tr>
                 <tr>
                     <th><label for="id-movie">ID фильма</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите id фильма" id="id-movie" name="id-movie" required></td>
+                    <td><input type="text" size="35px" placeholder="Введите id фильма" id="id-movie" name="id-movie" v-model="movie_id" required></td>
                 </tr>
                 <tr>
                     <th><label for="show-time">Время</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите время" id="show-time" name="show-time" required></td>
+                    <td><input type="text" size="35px" placeholder="Введите время" id="show-time" name="show-time" v-model="time_at" required></td>
                 </tr>
                 <tr>
                     <th><label for="show-room">Зал</label></th>
-                    <td><input type="text" size="35px" placeholder="Введите номер зала" id="show-room" name="show-room" required></td>
+                    <td><input type="text" size="35px" placeholder="Введите номер зала" id="show-room" name="show-room" v-model="room" required></td>
                 </tr>
             </table>
-            <button class="button" type="submit">Добавить</button>
+            <button class="button" type="button" value="add" v-on:click="add()">Добавить</button>
         </form>
     </div>
+</div>
 </body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: () => ({
+            id: null,
+            shows: null,
+            time_at: null,
+            room: null,
+            movie_id: null
+        }),
+        mounted: function () {
+            this.reload();
+        },
+        methods: {
+            reload: function () {
+                console.log('reload')
+                axios.get('http://localhost:3001/shows')
+                    .then(response => {
+                        this.shows = response.data
+                    })
+                    .catch(function (error) {
+                        shows = error;
+                    });
+            },
+            remove: function (id) {
+                axios.delete(`http://localhost:3001/shows/${id}`)
+                    .then(function () {
+                        console.log('Deleted successfully')
+                        app.reload();
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+            },
+            add: function () {
+                if (this.id === null) {
+                    console.log('add')
+                    axios.put('http://localhost:3001/shows', {
+                        movie_id : this.movie_id,
+                        time_at : this.time_at,
+                        room : this.room
+                    })
+                        .then(function () {
+                            app.reload();
+                        })
+                        .catch(function (error) {
+                            shows = error;
+                        });
+                } else {
+                    console.log('update')
+                    axios.post(`http://localhost:3001/shows/` + this.id, {
+                        movie_id : this.movie_id,
+                        time_at : this.time_at,
+                        room : this.room
+                    })
+                        .then(function (response) {
+                            console.log(this)
+                            app.reload();
+                        })
+                        .catch(function (error) {
+                            shows = error;
+                        });
+                }
+            },
+            update: function (id, movie_id, time_at, room) {
+                this.id = id;
+                this.movie_id = movie_id;
+                this.time_at = time_at;
+                this.room = room;
+            }
+        }
+    });
+</script>
 </html>

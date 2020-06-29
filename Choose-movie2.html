@@ -9,12 +9,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Marko+One&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
-        <nav class="navigation">
-            <a href="Client-home.html" class="nav">На главную</a> 
-            <a href="Client-schedule.html" class="nav">Расписание</a> 
-        </nav>
-    </header>
+<header class="header">
+    <nav class="navigation">
+        <a href="Client-home.html" class="nav">На главную</a>
+        <a href="Client-schedule.html" class="nav">Расписание</a>
+    </nav>
+</header>
+<div class="content">
+    <p class="data-show">
+        Выберите дату сеанса
+    </p>
+    <div class="calendar">
+        <input type="date" name="calendar" value="2020-06-26" max="2020-06-29" min="2020-06-27">
+        <a href="#?date=2020-06-26">Go</a>
+        <!-- кнопка должна перекинуть нас на страницу Choose-Film.html в зависимости от выбранного дня
+        если это 27.06.2020, то страница Choose-Film1.html
+        если это 28.06.2020, то страница Choose-Film2.html
+        если это 28.06.2020, то страница Choose-Film2.html  ???
+        -->
+    </div>
+</div>
+
     <div class="content">
         <div class="ann-movie movie">
             <img src="images/ann.jpeg" alt="poster of ann-movie" width="230" height="350">

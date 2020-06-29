@@ -87,7 +87,7 @@
         methods: {
             reload: function () {
                 console.log('reload')
-                axios.get('http://localhost:3002/movies')
+                axios.get('http://localhost:3001/movies')
                     .then(response => {
                         this.movies = response.data
                     })
